@@ -1,4 +1,4 @@
-import { Button, Card, TextField, useTheme } from "@mui/material";
+import { Button, Card, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import LoginIcon from '@mui/icons-material/Login';
@@ -15,6 +15,7 @@ export function LoginForm() : React.JSX.Element {
         pl: 10
         
       }}
+      elevation={8}
       component='form'
       autoComplete="off"
     >
