@@ -58,25 +58,25 @@ export function DashboardAdmin(): React.JSX.Element {
             }}
             elevation={12}
           >
-            <Typography align='center' fontSize={35} fontWeight={300}>
+            <Typography color={theme.palette.primary.main} align='center' fontSize={35} fontWeight={300}>
               Get Started
             </Typography>
             <Button
-              sx={{ m: 3 }}
+              sx={{ m: 3, borderRadius: 0 }}
               variant='contained'
               onClick={handleClickListCustomers}
             >
               Manage Customer Data
             </Button>
             <Button
-              sx={{ m: 3, mt: 0 }}
+              sx={{ m: 3, mt: 0, borderRadius: 0 }}
               variant='contained'
               onClick={handleClickListLoans}
             >
               Manage Loans
             </Button>
             <Button
-              sx={{ m: 3, mt: 0 }}
+              sx={{ m: 3, mt: 0, borderRadius: 0 }}
               variant='contained'
               onClick={handleClickListItemsMaster}
             >

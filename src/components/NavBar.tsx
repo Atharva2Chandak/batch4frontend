@@ -12,6 +12,7 @@ import React from "react";
 export function NavBar(): React.JSX.Element {
   const navItems = ["Home", "About", "Contact"];
   const theme = useTheme();
+  const handleHomeClick = ()=>window.location.href = '/'
   return (
     <AppBar
       component='nav'
@@ -31,6 +32,7 @@ export function NavBar(): React.JSX.Element {
           component='div'
           fontWeight={500}
           fontSize='23px'
+          onClick={handleHomeClick}
           sx={{ cursor: 'pointer', flexGrow: 1, color: theme.palette.primary.main }}
         >
           Loan Management System

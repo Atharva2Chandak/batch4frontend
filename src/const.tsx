@@ -36,9 +36,9 @@ export const APP_PATHS = {
   ADMIN: {
     LOGIN: '/admin/login',
     DASHBOARD: '/admin/dashboard/',
-    LIST_CUSTOMERS: '/admin/listcustomers/',
-    LIST_LOANS: '/admin/listloans/',
-    LIST_ITEMS: '/admin/listitems/'
+    LIST_CUSTOMERS: '/admin/managecustomers/',
+    LIST_LOANS: '/admin/manageloans/',
+    LIST_ITEMS: '/admin/manageitems/'
   }
 }
 
