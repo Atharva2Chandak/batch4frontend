@@ -1,5 +1,5 @@
 import { Card, Divider, Typography, useTheme } from "@mui/material";
-import { border, borderRadius, Box } from "@mui/system";
+import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { AVATAR_BASE_URL } from "../const";
 

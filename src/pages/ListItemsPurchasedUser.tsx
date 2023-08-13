@@ -1,4 +1,4 @@
-import { Button, Divider, Toolbar, Typography } from "@mui/material";
+import { Divider, Toolbar, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { EmployeeDetailsCard } from "../components/EmployeeDetailsCard";
