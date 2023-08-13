@@ -41,3 +41,6 @@ export const APP_PATHS = {
     LIST_ITEMS: '/admin/listitems/'
   }
 }
+
+// append the user's name at the end as the seed param
+export const AVATAR_BASE_URL='https://api.dicebear.com/6.x/initials/svg?seed='
