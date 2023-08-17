@@ -44,3 +44,13 @@ export const APP_PATHS = {
 
 // append the user's name at the end as the seed param
 export const AVATAR_BASE_URL='https://api.dicebear.com/6.x/initials/svg?seed='
+
+
+const API_BASE_URL='http://localhost:8080/api'
+
+export const API_PATHS = {
+  GET_ALL_EMPLOYEES: `${API_BASE_URL}/employee/all`,
+  CREATE_EMPLOYEE: `${API_BASE_URL}/employee/create`,
+  EDIT_EMPLOYEE: `${API_BASE_URL}/employee/update/`,
+  DELETE_EMPLOYEE: `${API_BASE_URL}/employee/delete/`,
+}

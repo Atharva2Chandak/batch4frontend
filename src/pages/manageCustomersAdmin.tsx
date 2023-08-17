@@ -1,24 +1,27 @@
 import { Button, Toolbar, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
 import { APP_PATHS } from "../const";
 import ManageCustomersTableAdmin from "../components/manageCustomersTableAdmin";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { getAllEmployees } from "../services/http.services";
+import AddCustomerModal from "../components/AddCustomerModal";
 
-
-export function ManageCustomersAdmin() : React.JSX.Element {
+export function ManageCustomersAdmin(): React.JSX.Element {
   const navigate = useNavigate();
-  const handleClickBackToDashBoard = ()=>navigate(APP_PATHS.ADMIN.DASHBOARD)
+  const handleClickBackToDashBoard = () => navigate(APP_PATHS.ADMIN.DASHBOARD);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <Toolbar/>
+      <Toolbar />
       <Box sx={{ ml: 2, mt: 2 }}>
         <Button
           id='back-to-dash-button'
@@ -29,11 +32,16 @@ export function ManageCustomersAdmin() : React.JSX.Element {
           Back to dashboard
         </Button>
       </Box>
-      <Typography fontWeight={300} color='gray' fontSize={'35px'} sx={{ml: 3, mt: 3}} >Manage Customer Data</Typography>
-      <Box
-        sx={{m: 3}}
+      <Typography
+        fontWeight={300}
+        color='gray'
+        fontSize={"35px"}
+        sx={{ ml: 3, mt: 3 }}
       >
-        <ManageCustomersTableAdmin/>
+        Manage Customer Data
+      </Typography>
+      <Box sx={{ m: 3 }}>
+        <ManageCustomersTableAdmin />
       </Box>
       <Toolbar />
       <Toolbar />
@@ -48,10 +56,11 @@ export function ManageCustomersAdmin() : React.JSX.Element {
         variant='contained'
         size='large'
         startIcon={<PersonAddIcon />}
-        // onClick={() => setModalOpen(true)}
+        onClick={() => setModalOpen(true)}
       >
         Add Customer Data
       </Button>
+      <AddCustomerModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </Box>
-  )
+  );
 }

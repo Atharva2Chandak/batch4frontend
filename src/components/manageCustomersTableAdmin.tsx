@@ -7,9 +7,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, IconButton } from '@mui/material';
+import { Button, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { getAllEmployees } from '../services/http.services';
+import { IEmployee } from '../types/employee';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -61,6 +63,11 @@ const rows = [
 ];
 
 export default function ManageCustomersTableAdmin() : React.JSX.Element {
+  const [employees, setEmployees] = React.useState<IEmployee[]>([])
+  React.useEffect(() => {
+    getAllEmployees().then(res=>setEmployees(res));
+  }, []);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -78,17 +85,17 @@ export default function ManageCustomersTableAdmin() : React.JSX.Element {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
+          {employees?.map((row, index) => (
+            <StyledTableRow key={index}>
+              <StyledTableCell component="th" scope="row"><Typography fontWeight='bold' color='gray' >{row.id.substring(0, 8)}</Typography></StyledTableCell>
+              <StyledTableCell  align="right">
                 {row.name}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
+              <StyledTableCell align="right">{row.designation || 'N/A'}</StyledTableCell>
+              <StyledTableCell align="right">{row.department || 'N/A'}</StyledTableCell>
+              <StyledTableCell align="right">{row.gender || 'N/A'}</StyledTableCell>
+              <StyledTableCell align="right">{row.dob || 'N/A'}</StyledTableCell>
+              <StyledTableCell align="right">{row.doj || 'N/A' }</StyledTableCell>
               <StyledTableCell align="right">
                 <Button color='success' startIcon={<EditIcon/>}>
                   Edit
