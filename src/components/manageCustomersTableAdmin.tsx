@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, IconButton, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getAllEmployees } from '../services/http.services';
@@ -87,7 +87,7 @@ export default function ManageCustomersTableAdmin() : React.JSX.Element {
         <TableBody>
           {employees?.map((row, index) => (
             <StyledTableRow key={index}>
-              <StyledTableCell component="th" scope="row"><Typography fontWeight='bold' color='gray' >{row.id.substring(0, 8)}</Typography></StyledTableCell>
+              <StyledTableCell component="th" scope="row"><Typography fontWeight='bold' color='gray' >{row.id?.substring(0, 8)}</Typography></StyledTableCell>
               <StyledTableCell  align="right">
                 {row.name}
               </StyledTableCell>

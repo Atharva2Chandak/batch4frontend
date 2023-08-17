@@ -1,5 +1,5 @@
 export type IEmployee = {
-  id: string;
+  id?: string;
   name: string;
   department?: string;
   designation?: string;
