@@ -3,10 +3,6 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import {
   Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
   useTheme,
 } from "@mui/material";

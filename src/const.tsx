@@ -54,3 +54,23 @@ export const API_PATHS = {
   EDIT_EMPLOYEE: `${API_BASE_URL}/employee/update/`,
   DELETE_EMPLOYEE: `${API_BASE_URL}/employee/delete/`,
 }
+
+export const GENDER_DROPDOWN = [
+  'male', 'female'
+]
+
+export const DEPARTMENTS = [
+  'CT',
+  'DTI',
+  'HR',
+  'LnD',
+  'Cyber Sec',
+  'CTO'
+]
+
+export const DESIGNATION = [
+  'Program Associate',
+  'Software Engineer',
+  'Senior Software Engineer',
+  'Manager',
+]
