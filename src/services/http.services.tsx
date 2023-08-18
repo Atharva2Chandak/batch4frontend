@@ -20,7 +20,7 @@ export async function createEmployee(customer: IEmployee & {password: string}) :
     password: customer.password,
     department: customer.department,
     designation: customer.designation,
-    gender: customer.gender,
+    gender: customer.gender ? customer.gender[0] : 'm', 
     dob: customer.dob,
     doj: customer.doj
   })

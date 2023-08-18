@@ -32,18 +32,17 @@ export default function AddCustomerModal(props: {
 
   React.useEffect(() => {
     if (
-      customer.password !== '' &&
+      customer.password !== "" &&
       customer.password === confpass &&
-      customer.name !== ''  &&
-      customer.gender !== '' &&
-      customer.department !== '' &&
-      customer.designation !== '' &&
-      customer.doj !== '' &&
-      customer.dob !== ''
+      customer.name !== "" &&
+      customer.gender !== "" &&
+      customer.department !== "" &&
+      customer.designation !== "" &&
+      customer.doj !== "" &&
+      customer.dob !== ""
     )
       setAllgood(true);
-    else
-      setAllgood(false);
+    else setAllgood(false);
   }, [customer, confpass]);
 
   return (
@@ -87,7 +86,9 @@ export default function AddCustomerModal(props: {
             sx={{ flex: 1, m: 2 }}
             disablePortal
             options={DEPARTMENTS}
-            onChange={(e, newVal)=>setCustomer({...customer, department: newVal as string})}
+            onChange={(e, newVal) =>
+              setCustomer({ ...customer, department: newVal as string })
+            }
             renderInput={(params) => (
               <TextField color='secondary' {...params} label='Department' />
             )}
@@ -103,7 +104,9 @@ export default function AddCustomerModal(props: {
             sx={{ flex: 1, m: 2 }}
             disablePortal
             options={DESIGNATION}
-            onChange={(e, newVal)=>setCustomer({...customer, designation: newVal as string})}
+            onChange={(e, newVal) =>
+              setCustomer({ ...customer, designation: newVal as string })
+            }
             renderInput={(params) => (
               <TextField color='secondary' {...params} label='Designation' />
             )}
@@ -113,7 +116,9 @@ export default function AddCustomerModal(props: {
             sx={{ flex: 1, m: 2 }}
             disablePortal
             options={GENDER}
-            onChange={(e, newVal)=>setCustomer({...customer, gender: newVal as string})}
+            onChange={(e, newVal) =>
+              setCustomer({ ...customer, gender: newVal as string })
+            }
             renderInput={(params) => (
               <TextField color='secondary' {...params} label='Gender' />
             )}
@@ -181,7 +186,7 @@ export default function AddCustomerModal(props: {
             color='secondary'
             sx={{ color: theme.palette.common.white, m: 2 }}
             disabled={!allgood}
-            onClick={()=>createEmployee(customer)}
+            onClick={() => createEmployee(customer)}
           >
             Create Employee
           </Button>
