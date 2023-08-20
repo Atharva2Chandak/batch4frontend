@@ -7,15 +7,17 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { IEmployee } from "../types/employee";
 import dayjs from "dayjs";
 import { DEPARTMENTS, DESIGNATION, GENDER_DROPDOWN as GENDER } from "../const";
-import { createEmployee } from "../services/http.services";
+import { editEmployee, getEmployeeById } from "../services/http.services";
 
-export default function AddCustomerModal(props: {
+export default function EditCustomerModal(props: {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   createdNewEmployee: number;
   setCreatedNewEmployee: React.Dispatch<React.SetStateAction<number>>;
+  customerId: string;
 }): React.JSX.Element {
   const theme = useTheme();
+
   const initialCustomerState = {
     name: "",
     department: "",
@@ -26,33 +28,33 @@ export default function AddCustomerModal(props: {
     password: "",
   };
 
+  React.useEffect(() => {
+    getEmployeeById(props.customerId).then(employee => setCustomer(employee))
+  }, [props.customerId])
+  
 
   const [customer, setCustomer] = React.useState<
-    IEmployee & { password: string }
+    IEmployee
   >(initialCustomerState);
 
   const handleClose = () => {
-    setCustomer(initialCustomerState);
     props.setModalOpen(false)
   };
   
   const [allgood, setAllgood] = React.useState<boolean>(false);
-  const [confpass, setConfpass] = React.useState<string>("");
 
   React.useEffect(() => {
     if (
-      customer.password !== "" &&
-      customer.password === confpass &&
-      customer.name !== "" &&
-      customer.gender !== "" &&
-      customer.department !== "" &&
-      customer.designation !== "" &&
-      customer.doj !== "" &&
-      customer.dob !== ""
+      customer?.name !== "" &&
+      customer?.gender !== "" &&
+      customer?.department !== "" &&
+      customer?.designation !== "" &&
+      customer?.doj !== "" &&
+      customer?.dob !== ""
     )
       setAllgood(true);
     else setAllgood(false);
-  }, [customer, confpass]);
+  }, [customer]);
 
   return (
     <Modal
@@ -88,6 +90,7 @@ export default function AddCustomerModal(props: {
             color='secondary'
             sx={{ flex: 1, m: 2 }}
             value={customer?.name || ""}
+            disabled
             onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
             label='Employee Name'
           />
@@ -96,6 +99,7 @@ export default function AddCustomerModal(props: {
             sx={{ flex: 1, m: 2 }}
             disablePortal
             options={DEPARTMENTS}
+            defaultValue={customer?.department}
             onChange={(e, newVal) =>
               setCustomer({ ...customer, department: newVal as string })
             }
@@ -114,6 +118,7 @@ export default function AddCustomerModal(props: {
             sx={{ flex: 1, m: 2 }}
             disablePortal
             options={DESIGNATION}
+            defaultValue={customer?.designation}
             onChange={(e, newVal) =>
               setCustomer({ ...customer, designation: newVal as string })
             }
@@ -126,6 +131,7 @@ export default function AddCustomerModal(props: {
             sx={{ flex: 1, m: 2 }}
             disablePortal
             options={GENDER}
+            defaultValue={customer?.gender}
             onChange={(e, newVal) =>
               setCustomer({ ...customer, gender: newVal as string })
             }
@@ -144,7 +150,7 @@ export default function AddCustomerModal(props: {
             <DatePicker
               label='DOB'
               sx={{ flex: 1, m: 2 }}
-              value={dayjs(customer.dob)}
+              value={dayjs(customer?.dob)}
               onChange={(e) =>
                 setCustomer({ ...customer, dob: e?.format("DD-MM-YYYY") })
               }
@@ -157,7 +163,7 @@ export default function AddCustomerModal(props: {
             <DatePicker
               label='DOJ'
               sx={{ flex: 1, m: 2 }}
-              value={dayjs(customer.doj)}
+              value={dayjs(customer?.doj)}
               onChange={(e) => {
                 setCustomer({ ...customer, doj: e?.format("DD-MM-YYYY") });
                 console.log(customer);
@@ -170,25 +176,7 @@ export default function AddCustomerModal(props: {
             />
           </LocalizationProvider>
         </Box>
-        <Box sx={{ display: "flex" }}>
-          <TextField
-            color='secondary'
-            sx={{ flex: 1, m: 2 }}
-            value={customer?.password || ""}
-            onChange={(e) =>
-              setCustomer({ ...customer, password: e.target.value })
-            }
-            label='Password'
-            type='password'
-          />
-          <TextField
-            color='secondary'
-            sx={{ flex: 1, m: 2 }}
-            value={confpass}
-            onChange={(e) => setConfpass(e.target.value)}
-            label='Confirm Password'
-          />
-        </Box>
+        
 
         <Box>
           <Button
@@ -197,12 +185,12 @@ export default function AddCustomerModal(props: {
             sx={{ color: theme.palette.common.white, m: 2 }}
             disabled={!allgood}
             onClick={() => {
-              createEmployee(customer);
+              editEmployee(customer, props.customerId)
               props.setModalOpen(false)
               props.setCreatedNewEmployee(props.createdNewEmployee + 1);
             }}
           >
-            Create Employee
+            Update Employee
           </Button>
         </Box>
       </Box>
