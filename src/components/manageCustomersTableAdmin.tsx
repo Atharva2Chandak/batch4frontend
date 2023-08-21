@@ -7,11 +7,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, IconButton, Typography } from '@mui/material';
+import { Button, Snackbar, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getAllEmployees } from '../services/http.services';
+import { deleteEmployee, getAllEmployees } from '../services/http.services';
 import { IEmployee } from '../types/employee';
+import EditCustomerModal from './EditCustomerModal';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -33,40 +34,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-) {
-  return { name, calories, fat, carbs, protein };
-}
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  
-];
-
-export default function ManageCustomersTableAdmin() : React.JSX.Element {
+export default function ManageCustomersTableAdmin(props: {createdNewEmployee: number, setCreatedNewEmployee: React.Dispatch<React.SetStateAction<number>>}) : React.JSX.Element {
   const [employees, setEmployees] = React.useState<IEmployee[]>([])
+  const [snackOpen, setSnackOpen] = React.useState<boolean>(false);
+  const [editModalOpen, setEditModalOpen] = React.useState<boolean>(false);
+  const [editCustomerId, setEditCustomerId] = React.useState<string>('');
+
+  const handleSnackClose = ()=>setSnackOpen(false);
+
   React.useEffect(() => {
     getAllEmployees().then(res=>setEmployees(res));
-  }, []);
+  }, [props.createdNewEmployee]);
+
 
   return (
     <TableContainer component={Paper}>
@@ -87,7 +67,7 @@ export default function ManageCustomersTableAdmin() : React.JSX.Element {
         <TableBody>
           {employees?.map((row, index) => (
             <StyledTableRow key={index}>
-              <StyledTableCell component="th" scope="row"><Typography fontWeight='bold' color='gray' >{row.id.substring(0, 8)}</Typography></StyledTableCell>
+              <StyledTableCell component="th" scope="row"><Typography fontWeight='bold' color='gray' >{row.id?.substring(0, 8)}</Typography></StyledTableCell>
               <StyledTableCell  align="right">
                 {row.name}
               </StyledTableCell>
@@ -97,13 +77,28 @@ export default function ManageCustomersTableAdmin() : React.JSX.Element {
               <StyledTableCell align="right">{row.dob || 'N/A'}</StyledTableCell>
               <StyledTableCell align="right">{row.doj || 'N/A' }</StyledTableCell>
               <StyledTableCell align="right">
-                <Button color='success' startIcon={<EditIcon/>}>
+                <Button 
+                  color='success' 
+                  startIcon={<EditIcon/>}
+                  onClick={()=>{
+                    setEditCustomerId(row.id || '')
+                    setEditModalOpen(true)
+                  }}
+                >
                   Edit
                 </Button>
               </StyledTableCell>
               <StyledTableCell align="right">
-              <Button color='error' startIcon={<DeleteIcon/>}>
-                  Edit
+              <Button 
+                color='error' 
+                startIcon={<DeleteIcon/>} 
+                onClick={()=>{
+                  deleteEmployee(row.id || '')
+                  props.setCreatedNewEmployee(props.createdNewEmployee + 1)
+                  setSnackOpen(true);
+                }}
+              >
+                  Delete
                 </Button>
               </StyledTableCell>
               
@@ -111,6 +106,20 @@ export default function ManageCustomersTableAdmin() : React.JSX.Element {
           ))}
         </TableBody>
       </Table>
+      <Snackbar
+        open={snackOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackClose}
+        message="Employee Deleted successfully"
+        // action={action}
+      />
+      <EditCustomerModal 
+        createdNewEmployee={props.createdNewEmployee} 
+        setCreatedNewEmployee={props.setCreatedNewEmployee}
+        customerId={editCustomerId}
+        modalOpen={editModalOpen}
+        setModalOpen={setEditModalOpen}
+      />
     </TableContainer>
   );
 }

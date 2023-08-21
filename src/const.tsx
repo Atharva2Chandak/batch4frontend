@@ -4,7 +4,8 @@ export const HTTP_METHODS = {
   GET: 'GET',
   PUT: 'PUT',
   POST: 'POST',
-  DELETE: 'DELETE'
+  DELETE: 'DELETE',
+  PATCH: 'PATCH'
 }
 
 
@@ -55,6 +56,7 @@ export const API_PATHS = {
   DELETE_EMPLOYEE: `${API_BASE_URL}/employee/delete/`,
 
   GET_ALL_LOANS: `${API_BASE_URL}/loan/all/`,
+  GET_EMPLOYEE_BY_ID: `${API_BASE_URL}/employee/`
 }
 
 export const GENDER_DROPDOWN = [

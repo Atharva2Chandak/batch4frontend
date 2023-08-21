@@ -13,6 +13,7 @@ export function ManageCustomersAdmin(): React.JSX.Element {
   const navigate = useNavigate();
   const handleClickBackToDashBoard = () => navigate(APP_PATHS.ADMIN.DASHBOARD);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [createdNewEmployee, setCreatedNewEmployee] = useState<number>(0);
 
   return (
     <Box
@@ -41,7 +42,10 @@ export function ManageCustomersAdmin(): React.JSX.Element {
         Manage Customer Data
       </Typography>
       <Box sx={{ m: 3 }}>
-        <ManageCustomersTableAdmin />
+        <ManageCustomersTableAdmin
+          createdNewEmployee={createdNewEmployee}
+          setCreatedNewEmployee={setCreatedNewEmployee}
+        />
       </Box>
       <Toolbar />
       <Toolbar />
@@ -60,7 +64,12 @@ export function ManageCustomersAdmin(): React.JSX.Element {
       >
         Add Customer Data
       </Button>
-      <AddCustomerModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <AddCustomerModal
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        createdNewEmployee={createdNewEmployee}
+        setCreatedNewEmployee={setCreatedNewEmployee}
+      />
     </Box>
   );
 }
