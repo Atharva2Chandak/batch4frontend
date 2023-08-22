@@ -10,6 +10,7 @@ import { ManageItemsAdmin } from "./pages/manageItemsAdmin";
 import { ListItemsPurchasedUser } from "./pages/ListItemsPurchasedUser";
 import { ListLoansUser } from "./pages/ListLoansUser";
 import { UserLogin } from "./pages/UserLogin";
+import { ManageLoansAdmin } from "./pages/manageLoansAdmin";
 
 export function AppRoutes(): React.JSX.Element {
   return (
@@ -25,7 +26,7 @@ export function AppRoutes(): React.JSX.Element {
         <Route path={APP_PATHS.ADMIN.LOGIN} element={<AdminLogin />} />
         <Route path={APP_PATHS.ADMIN.DASHBOARD} element={<DashboardAdmin />} />
         <Route path={APP_PATHS.ADMIN.LIST_CUSTOMERS} element={<ManageCustomersAdmin/>} />
-        <Route path={APP_PATHS.ADMIN.LIST_LOANS} element={<>list loans</>} />
+        <Route path={APP_PATHS.ADMIN.LIST_LOANS} element={<ManageLoansAdmin/>} />
         <Route path={APP_PATHS.ADMIN.LIST_ITEMS}element={<ManageItemsAdmin/>} />
         
       </Routes>
