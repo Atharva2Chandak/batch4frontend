@@ -1,21 +1,45 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField, useTheme } from "@mui/material";
+import { Autocomplete, Button, FormControl, InputLabel, MenuItem, Select, TextField, useTheme } from "@mui/material";
+import { ILoan } from "../types/loan";
+import { createLoan } from "../services/http.services";
 
 
+export default function ManageLoanModal(props: {
+  modalOpen: boolean;
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  createdNewLoan: number;
+  setCreatedNewLoan: React.Dispatch<React.SetStateAction<number>>;
+}): React.JSX.Element {
+    const theme = useTheme();
 
-export default function ManageLoanModal(props: any): React.JSX.Element {
-  const theme = useTheme();
-  const handleClose = () => props.setModalOpen(false);
-  const [loanId, setLoanId] = React.useState(props.loanId||'');
-  const [loanType, setLoanType] = React.useState(props.loanType||'');
-  const [loanDuration, setLoanDuration] = React.useState(props.loanDuration||'');
+    const initialLoanState = {
+      durationInYears: 0,
+      loanType: "",
+    };
+  
 
-  const handleAddLoan = () =>{
-    if (loanId && loanType && loanDuration)
-      props.setModalOpen(false);
-  }
+  const [card, setLoan] = React.useState<
+    ILoan 
+  >(initialLoanState);
+
+  const handleClose = () => {
+    setLoan(initialLoanState);
+    props.setModalOpen(false)
+  };
+
+  const [allgood, setAllgood] = React.useState<boolean>(false);
+  const [confpass, setConfpass] = React.useState<string>("");
+
+  React.useEffect(() => {
+    if (
+      typeof card.durationInYears == "number" &&
+      card.loanType !== ""
+    )
+      setAllgood(true);
+    else setAllgood(false);
+  }, [card, confpass]);
 
   return (
     <Modal
@@ -41,43 +65,48 @@ export default function ManageLoanModal(props: any): React.JSX.Element {
         }} 
         component='form'
       >
+        
         <Box
           sx={{
             display:'flex'
           }}
         >
-          <TextField value={loanId} color='primary' sx={{flex: 1, m: 2}} label='Loan ID' onChange={(event)=>{setLoanId(event.target.value as string)}} />
-        </Box>
-        <Box
-          sx={{
-            display:'flex'
-          }}
-        >
-          <FormControl sx={{flex: 1, m: 2}} >
-            <InputLabel color='primary' id="select-loan-loanType">Loan Type</InputLabel>
-            <Select value={loanType || ''} color='primary' id='select-loan-loanType' label='loanType' onChange={(event)=>{setLoanType(event.target.value as string)}}>
-              <MenuItem value="Furniture">Furniture</MenuItem>
-              <MenuItem value="Electrical">Electrical</MenuItem>
-              <MenuItem value="Household">Household</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl sx={{flex: 1, m: 2}} >
-            <InputLabel color='primary' id='select-loan-loanDuration' >Duration</InputLabel>
+            <TextField
+                type = "text"                
+                color='primary'
+                sx={{ flex: 1, m: 2 }}
+                id='select-loan-loanType'
+                label='Loan Type'  
+                onChange={(e) =>
+                  setLoan({ ...card, loanType: e.target.value })
+                }
+            />         
+
             <TextField
                 type = "number"
-                //value={ loanDuration || ''} 
-                color='primary' id='select-loan-loanDuration' 
-                //label='loanDuration' 
-                onChange={(event)=>{setLoanDuration(event.target.value as string)}}
-                // sx = {{"&label.Mui-focused": {display:"none"}, "&legend":{display: "none"}}}
+                sx={{ flex: 1, m: 2 }}
+                color='primary' 
+                id='select-loan-loanDuration' 
+                label='Duration' 
+                onChange={(e) =>
+                  setLoan({ ...card, durationInYears: e.target.value as unknown as number })
+                }
             />
-            {/* <Select value={ loanDuration || ''} color='primary' id='select-loan-loanDuration' label='loanDuration' onChange={(event)=>{setLoanDuration(event.target.value as string)}}>
-              <MenuItem value="1">1 year</MenuItem>
-              <MenuItem value="2">2 years</MenuItem>
-              <MenuItem value="3">3 years</MenuItem>
-              <MenuItem value="4">4 years</MenuItem>
-            </Select> */}
-          </FormControl>
+        </Box>
+
+        <Box sx = {{display: "flex", justifyContent: "center"}}>
+          <Button
+            variant='contained'
+            color='secondary'
+            sx={{ color: theme.palette.common.white, m: 2 }}
+            onClick={() => {
+              createLoan(card);
+              props.setModalOpen(false)
+              props.setCreatedNewLoan(props.createdNewLoan + 1);
+            }}
+          >
+            Create Loan
+          </Button>
         </Box>
       </Box>
     </Modal>

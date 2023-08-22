@@ -50,11 +50,11 @@ const rows = [
   createData('L001', 'Furniture', 3),
 ];
 
-export default function ManageLoansTableAdmin() : React.JSX.Element {
+export default function ManageLoansTableAdmin(props: {createdNewLoan: number, setCreatedNewLoan: React.Dispatch<React.SetStateAction<number>>}) : React.JSX.Element {
   const [loans, setLoan] = React.useState<ILoan[]>([])
   React.useEffect(() => {
     getAllLoans().then(res=>setLoan(res));
-  }, []);
+  }, [props.createdNewLoan]);
 
   return (
     <TableContainer component={Paper}>
@@ -71,7 +71,7 @@ export default function ManageLoansTableAdmin() : React.JSX.Element {
         <TableBody>
           {loans?.map((row, index) => (
             <StyledTableRow key={index}>
-              <StyledTableCell component="th" scope="row"><Typography fontWeight='bold' color='gray' >{row.id.substring(0, 8)}</Typography></StyledTableCell>
+              <StyledTableCell component="th" scope="row"><Typography fontWeight='bold' color='gray' >{row?.id?.substring(0, 8)}</Typography></StyledTableCell>
               <StyledTableCell align="center">{row.loanType || 'N/A'}</StyledTableCell>
               <StyledTableCell align="right">{row.durationInYears || 'N/A'}</StyledTableCell>
               <StyledTableCell align="right">

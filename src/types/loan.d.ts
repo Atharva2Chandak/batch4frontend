@@ -1,5 +1,6 @@
 export type ILoan = {
-    id: string;
+    durationInYears?: number;
+    id?: string;
     loanType: string;
-    durationInYears?: string;
+    
   }

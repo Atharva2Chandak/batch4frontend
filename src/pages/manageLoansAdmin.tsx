@@ -14,6 +14,7 @@ export function ManageLoansAdmin(): React.JSX.Element {
   const navigate = useNavigate();
   const handleClickBackToDashBoard = () => navigate(APP_PATHS.ADMIN.DASHBOARD);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [createdNewLoan, setCreatedNewLoan] = useState<number>(0);
 
   return (
     <Box
@@ -42,8 +43,10 @@ export function ManageLoansAdmin(): React.JSX.Element {
         Manage Loans
       </Typography>
       <Box sx={{ m: 3 }}>
-        <ManageLoansTableAdmin />
-      </Box>
+        <ManageLoansTableAdmin
+          createdNewLoan={createdNewLoan}
+          setCreatedNewLoan={setCreatedNewLoan}
+        />
       <Toolbar />
       <Toolbar />
       <Button
@@ -61,7 +64,13 @@ export function ManageLoansAdmin(): React.JSX.Element {
       >
         Add Loan
       </Button>
-      <ManageLoansModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <ManageLoansModal 
+      modalOpen={modalOpen}
+      setModalOpen={setModalOpen}
+      createdNewLoan={createdNewLoan}
+      setCreatedNewLoan={setCreatedNewLoan}
+      />
+    </Box>
     </Box>
   );
 }
