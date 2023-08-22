@@ -38,6 +38,7 @@ export default function EditCustomerModal(props: {
   >(initialCustomerState);
 
   const handleClose = () => {
+    // setCustomer(initialCustomerState)
     props.setModalOpen(false)
   };
   
@@ -99,12 +100,12 @@ export default function EditCustomerModal(props: {
             sx={{ flex: 1, m: 2 }}
             disablePortal
             options={DEPARTMENTS}
-            defaultValue={customer?.department}
+            // defaultValue={customer?.department}
             onChange={(e, newVal) =>
               setCustomer({ ...customer, department: newVal as string })
             }
             renderInput={(params) => (
-              <TextField color='secondary' {...params} label='Department' />
+              <TextField value={customer?.department} color='secondary' {...params} label='Department' />
             )}
           />
         </Box>
@@ -186,7 +187,7 @@ export default function EditCustomerModal(props: {
             disabled={!allgood}
             onClick={() => {
               editEmployee(customer, props.customerId)
-              props.setModalOpen(false)
+              handleClose()
               props.setCreatedNewEmployee(props.createdNewEmployee + 1);
             }}
           >

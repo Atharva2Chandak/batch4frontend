@@ -113,13 +113,13 @@ export default function ManageCustomersTableAdmin(props: {createdNewEmployee: nu
         message="Employee Deleted successfully"
         // action={action}
       />
-      <EditCustomerModal 
+      {editModalOpen ? <EditCustomerModal 
         createdNewEmployee={props.createdNewEmployee} 
         setCreatedNewEmployee={props.setCreatedNewEmployee}
         customerId={editCustomerId}
         modalOpen={editModalOpen}
         setModalOpen={setEditModalOpen}
-      />
+      /> : <></>}
     </TableContainer>
   );
 }
