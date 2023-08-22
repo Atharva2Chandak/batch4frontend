@@ -33,6 +33,7 @@ export default function AddCustomerModal(props: {
 
   const handleClose = () => {
     setCustomer(initialCustomerState);
+    setConfpass("");
     props.setModalOpen(false)
   };
   
@@ -57,7 +58,7 @@ export default function AddCustomerModal(props: {
   return (
     <Modal
       id='modal'
-      keepMounted={false}
+      // keepMounted={false}
       open={props.modalOpen}
       onClose={handleClose}
       aria-labelledby='modal-modal-title'
@@ -196,8 +197,10 @@ export default function AddCustomerModal(props: {
             color='secondary'
             sx={{ color: theme.palette.common.white, m: 2 }}
             disabled={!allgood}
-            onClick={() => {
+            onClick={() => {              
               createEmployee(customer);
+              setCustomer(initialCustomerState);
+              setConfpass("");
               props.setModalOpen(false)
               props.setCreatedNewEmployee(props.createdNewEmployee + 1);
             }}
