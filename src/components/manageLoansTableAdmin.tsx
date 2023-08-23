@@ -7,11 +7,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, IconButton, Typography } from '@mui/material';
+import { Button, IconButton, Snackbar, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getAllLoans } from '../services/http.services';
+import { deleteLoan, getAllLoans } from '../services/http.services';
 import { ILoan } from '../types/loan';
+import EditLoanModal from './EditLoanModal';
 //???????? make service?
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -42,16 +43,14 @@ function createData(
   return { id, loanType, durationInYears};
 }
 
-const rows = [
-  createData('L001', 'Furniture', 3),
-  createData('L002', 'Electronics', 2),
-  createData('L001', 'Furniture', 3),
-  createData('L003', 'Food', 1),
-  createData('L001', 'Furniture', 3),
-];
-
 export default function ManageLoansTableAdmin(props: {createdNewLoan: number, setCreatedNewLoan: React.Dispatch<React.SetStateAction<number>>}) : React.JSX.Element {
   const [loans, setLoan] = React.useState<ILoan[]>([])
+  const [snackOpen, setSnackOpen] = React.useState<boolean>(false);
+  const [editModalOpen, setEditModalOpen] = React.useState<boolean>(false);
+  const [editLoanId, setEditLoanId] = React.useState<string>('');
+
+  const handleSnackClose = ()=>setSnackOpen(false);
+
   React.useEffect(() => {
     getAllLoans().then(res=>setLoan(res));
   }, [props.createdNewLoan]);
@@ -75,12 +74,25 @@ export default function ManageLoansTableAdmin(props: {createdNewLoan: number, se
               <StyledTableCell align="center">{row.loanType || 'N/A'}</StyledTableCell>
               <StyledTableCell align="right">{row.durationInYears || 'N/A'}</StyledTableCell>
               <StyledTableCell align="right">
-                <Button color='success' startIcon={<EditIcon/>}>
+                <Button color='success' startIcon={<EditIcon/>}
+                  onClick={()=>{
+                    setEditLoanId(row.id || '')
+                    setEditModalOpen(true)
+                  }}
+                >
                   Edit
                 </Button>
               </StyledTableCell>
               <StyledTableCell align="right">
-              <Button color='error' startIcon={<DeleteIcon/>}>
+              <Button 
+                color='error' 
+                startIcon={<DeleteIcon/>} 
+                onClick={()=>{
+                  deleteLoan(row.id || '')
+                  props.setCreatedNewLoan(props.createdNewLoan + 1)
+                  setSnackOpen(true);
+                }}
+              >
                   Delete
                 </Button>
               </StyledTableCell>
@@ -89,6 +101,20 @@ export default function ManageLoansTableAdmin(props: {createdNewLoan: number, se
           ))}
         </TableBody>
       </Table>
+      <Snackbar
+        open={snackOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackClose}
+        message="Loan Deleted successfully"
+        // action={action}
+      />
+      {editModalOpen ? <EditLoanModal 
+        createdNewLoan={props.createdNewLoan} 
+        setCreatedNewLoan={props.setCreatedNewLoan}
+        loanId={editLoanId}
+        modalOpen={editModalOpen}
+        setModalOpen={setEditModalOpen}
+      /> : <></>}
     </TableContainer>
   );
 }
