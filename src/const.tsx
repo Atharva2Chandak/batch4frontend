@@ -50,16 +50,16 @@ export const AVATAR_BASE_URL='https://api.dicebear.com/6.x/initials/svg?seed='
 const API_BASE_URL='http://localhost:8080/api'
 
 export const API_PATHS = {
-  GET_ALL_EMPLOYEES: `${API_BASE_URL}/employee/all`,
-  CREATE_EMPLOYEE: `${API_BASE_URL}/employee/create`,
+  GET_ALL_EMPLOYEES: `${API_BASE_URL}/employee/all/`,
+  CREATE_EMPLOYEE: `${API_BASE_URL}/employee/create/`,
   EDIT_EMPLOYEE: `${API_BASE_URL}/employee/update/`,
   DELETE_EMPLOYEE: `${API_BASE_URL}/employee/delete/`,
   GET_EMPLOYEE_BY_ID: `${API_BASE_URL}/employee/`,
 
   GET_ALL_LOANS: `${API_BASE_URL}/loan/all/`,
-  CREATE_LOAN: `${API_BASE_URL}/loan/create`,
-  EDIT_LOAN:  `${API_BASE_URL}/loan/update`,
-  DELETE_LOAN:  `${API_BASE_URL}/loan/delete`,
+  CREATE_LOAN: `${API_BASE_URL}/loan/create/`,
+  EDIT_LOAN:  `${API_BASE_URL}/loan/update/`,
+  DELETE_LOAN:  `${API_BASE_URL}/loan/delete/`,
   GET_LOAN_BY_ID:  `${API_BASE_URL}/loan/`,
 }
 
