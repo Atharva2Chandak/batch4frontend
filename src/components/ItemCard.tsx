@@ -10,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import ManageItemModal from '../components/ManageItemModal'
+import { deleteItem } from "../services/http.itemservices";
 
 export default function ItemCard(props:any) : React.JSX.Element {
   // const theme = useTheme();
@@ -19,11 +20,14 @@ export default function ItemCard(props:any) : React.JSX.Element {
     <>
     <Card variant="elevation" sx={{boxShadow:5,p:2}}>
       <CardContent>
-        <Typography sx={{ fontSize: 14,mb:0 }} color="text.secondary" gutterBottom>
-          Item #{props.itemId}
+        <Typography sx={{ fontSize: 12,mb:0 }} color="text.secondary" gutterBottom>
+          Item #<br/>{props.id}
         </Typography>
-        <Typography variant="h5" component="div">
-          {props.itemValue}
+        <Typography variant="h6" component="div">
+          {props.itemDescription}
+        </Typography>
+        <Typography sx={{ mb: 1.5 }} variant="body1">
+          {'\u20B9'+props.itemValuation}
         </Typography>
         <hr style={{height:"50%"}}/>
 
@@ -48,12 +52,9 @@ export default function ItemCard(props:any) : React.JSX.Element {
         </Box>
         <hr/>
 
-        <Typography sx={{ mb: 1.5 }} variant="body2">
-          {props.itemDesc}
-        </Typography>
 
         <Typography  sx={{ fontSize: 14 }}  color="text.secondary">
-          Issue status: <span style={{color:props.itemStatus==='Yes'?'green':'red'}}>{props.itemStatus}</span>
+          Issue status: <span style={{color:props.issueStatus=='1'?'green':'red'}}>{props.issueStatus=='1'?"YES":"NO"}</span>
         </Typography>
       </CardContent>
 
@@ -61,7 +62,7 @@ export default function ItemCard(props:any) : React.JSX.Element {
         <Button variant="outlined" startIcon={<EditIcon/>} onClick={() => setModalOpen(true)}>
           Edit
         </Button>
-        <Button variant="outlined" startIcon={<DeleteIcon/>}>
+        <Button variant="outlined" startIcon={<DeleteIcon/>}  onClick={() => deleteItem(props.id)}>
           Delete
         </Button>
       </CardActions>

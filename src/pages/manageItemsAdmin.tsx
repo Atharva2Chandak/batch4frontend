@@ -10,22 +10,31 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import ItemCard from "../components/ItemCard";
 import ManageItemModal from "../components/ManageItemModal";
+import { deleteItem, getAllItems } from '../services/http.itemservices';
+import { Item } from "../types/item";
 
-const Items = [
-  {itemId:3434,itemValue:"Table", itemCategory:"Furniture", itemMake:"Wooden", itemStatus:"Yes", itemDesc:"This is an awesome product"},
-  {itemId:5534,itemValue:"Chair", itemCategory:"Furniture", itemMake:"Wooden", itemStatus:"Yes", itemDesc:"Super comfortable chair"},
-  {itemId:2134,itemValue:"Table", itemCategory:"Furniture", itemMake:"Plastic", itemStatus:"No", itemDesc:"Sturdy plastic table"},
-  {itemId:4664,itemValue:"Speaker", itemCategory:"Electrical", itemMake:"Plastic", itemStatus:"Yes", itemDesc:"Water-proof bluetooth speaker"},
-  {itemId:9544,itemValue:"Backpack", itemCategory:"Household", itemMake:"Cloth", itemStatus:"Yes", itemDesc:"35L backpack with extra storage"},
-  {itemId:7667,itemValue:"Mug", itemCategory:"Household", itemMake:"Glass", itemStatus:"Yes", itemDesc:"For your fresh start in the morning"},
-  {itemId:1134,itemValue:"Center Table", itemCategory:"Furniture", itemMake:"Wooden", itemStatus:"No", itemDesc:"This is an awesome product"},
-]
+// const Items = [
+//   {itemId:3434,itemValuation:"Table", itemCategory:"Furniture", itemMake:"Wooden", itemStatus:"Yes", itemDesc:"This is an awesome product"},
+//   {itemId:5534,itemValuation:"Chair", itemCategory:"Furniture", itemMake:"Wooden", itemStatus:"Yes", itemDesc:"Super comfortable chair"},
+//   {itemId:2134,itemValuation:"Table", itemCategory:"Furniture", itemMake:"Plastic", itemStatus:"No", itemDesc:"Sturdy plastic table"},
+//   {itemId:4664,itemValuation:"Speaker", itemCategory:"Electrical", itemMake:"Plastic", itemStatus:"Yes", itemDesc:"Water-proof bluetooth speaker"},
+//   {itemId:9544,itemValuation:"Backpack", itemCategory:"Household", itemMake:"Cloth", itemStatus:"Yes", itemDesc:"35L backpack with extra storage"},
+//   {itemId:7667,itemValuation:"Mug", itemCategory:"Household", itemMake:"Glass", itemStatus:"Yes", itemDesc:"For your fresh start in the morning"},
+//   {itemId:1134,itemValuation:"Center Table", itemCategory:"Furniture", itemMake:"Wooden", itemStatus:"No", itemDesc:"This is an awesome product"},
+// ]
 
 export function ManageItemsAdmin() : React.JSX.Element {
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const handleClickBackToDashBoard = ()=>navigate(APP_PATHS.ADMIN.DASHBOARD)
+
+  const [Items, setItems] = React.useState<Item[]>([])
+  React.useEffect(() => {
+      getAllItems().then(res=>setItems(res));
+    },
+  //  [props.createdNewEmployee]
+  );
 
   return (
     <Box
@@ -74,7 +83,10 @@ export function ManageItemsAdmin() : React.JSX.Element {
         variant='contained'
         size='large'
         startIcon={<AddBoxIcon />}
-        onClick={() => setModalOpen(true)}
+        onClick={() => {
+            setModalOpen(true);
+          }
+        }
       >
         Add New Item
       </Button>
