@@ -1,13 +1,16 @@
 import React from 'react';
 import { NavBar } from './components/NavBar';
 import { AppRoutes } from './routes';
+import { UserDetailsProvider } from './contexts/UserDetailsProvider';
 
 
 function App() {
   return (
     <>
-      <NavBar />
-      <AppRoutes/>
+      <UserDetailsProvider>
+        <NavBar />
+        <AppRoutes/>
+      </UserDetailsProvider>
     </>
   );
 }

@@ -6,4 +6,4 @@ export type IEmployee = {
   gender?: string;
   dob?: string;
   doj?: string;
-}
+} 
