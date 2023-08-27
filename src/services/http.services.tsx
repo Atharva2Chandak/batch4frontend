@@ -106,6 +106,24 @@ export async function getLoanedItemsByEmployee() : Promise<ILoanedItems[]> {
 
 }
 
+export async function PurchaseNewItem(itemId: string) : Promise<{issueId: string}>{
+  const headers = new Headers();
+  const token = Cookies.get('bearer-token') || '';
+  headers.append('Authorization', `Bearer ${token}`);
+  headers.append("Content-Type", "application/json");
+  const raw = JSON.stringify({
+    itemId: itemId
+  })
+  const response = await fetch(API_PATHS.LOAN_NEW_ITEM, {
+    method: HTTP_METHODS.POST,
+    headers: headers,
+    body: raw
+  })
+  const issueId = await response?.json();
+  return issueId as {issueId: string};
+}
+
+
 ///######################## loans #########################
 export async function getAllLoans() : Promise<ILoan[]> {
   const myHeaders = new Headers();

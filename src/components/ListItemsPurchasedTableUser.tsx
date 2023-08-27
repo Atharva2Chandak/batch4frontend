@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { getLoanedItemsByEmployee } from '../services/http.services';
 import { ILoanedItems } from '../types/IloanedItems';
-import { Typography } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -47,21 +47,29 @@ export default function ListItemsPurchasedTableUser() : React.JSX.Element {
             <StyledTableCell align="right">Make</StyledTableCell>
             <StyledTableCell align="right">Category</StyledTableCell>
             <StyledTableCell align="right">Valuation</StyledTableCell>
+            <StyledTableCell align="right">Issue Date</StyledTableCell>
+            <StyledTableCell align="right">Return By</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {loanedItems?.map((item) => (
             <StyledTableRow key={item.issueId}>
               <StyledTableCell component="th" scope="row">
-                <Typography color='gray' fontWeight={'bold'} onClick={()=>navigator.clipboard.writeText(item.issueId)} >{item.issueId.substring(0, 8)}</Typography>
+                <Tooltip title='click to copy'>
+                  <Typography sx={{cursor: 'pointer'}} color='gray' fontWeight={'bold'} onClick={()=>navigator.clipboard.writeText(item.issueId)} >{item.issueId.substring(0, 8)}</Typography>
+                </Tooltip>
               </StyledTableCell>
               <StyledTableCell  >
-                <Typography color='gray' fontWeight={'bold'}>{item.id.substring(0, 8)}</Typography>
+                <Tooltip title='click to copy'>
+                  <Typography sx={{cursor: 'pointer'}} color='gray' fontWeight={'bold'} onClick={()=>navigator.clipboard.writeText(item.id)} >{item.id.substring(0, 8)}</Typography>
+                </Tooltip>
               </StyledTableCell>
               <StyledTableCell align="right">{item.itemDescription}</StyledTableCell>
               <StyledTableCell align="right">{item.itemMake}</StyledTableCell>
               <StyledTableCell align="right">{item.itemCategory}</StyledTableCell>
               <StyledTableCell align="right">{item.itemValuation}</StyledTableCell>
+              <StyledTableCell align="right">{item.issueDate.substring(0, 10)}</StyledTableCell>
+              <StyledTableCell align="right">{item.returnDate.substring(0, 10)}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

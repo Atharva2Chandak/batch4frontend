@@ -8,7 +8,7 @@ import { Home } from "./pages/home";
 import { ManageCustomersAdmin } from "./pages/manageCustomersAdmin";
 import { ManageItemsAdmin } from "./pages/manageItemsAdmin";
 import { ListItemsPurchasedUser } from "./pages/ListItemsPurchasedUser";
-import { ListLoansUser } from "./pages/ListLoansUser";
+import { LoanNewItem } from "./pages/LoanNewItem";
 import { UserLogin } from "./pages/UserLogin";
 import { ManageLoansAdmin } from "./pages/manageLoansAdmin";
 import { userDetailsContext } from "./contexts/UserDetailsProvider";
@@ -26,7 +26,7 @@ export function AppRoutes(): React.JSX.Element {
 
         <Route path={APP_PATHS.USER.LOGIN} element={<UserLogin />} />
         <Route path={APP_PATHS.USER.DASHBOARD} element={globalUser.roles?.at(0) === USER_ROLES.USER ? <DashboardUser/> : <UserLogin />} />
-        <Route path={APP_PATHS.USER.LIST_LOANS} element={globalUser.roles?.at(0) === USER_ROLES.USER ? <ListLoansUser /> : <UserLogin />} />
+        <Route path={APP_PATHS.USER.LIST_LOANS} element={globalUser.roles?.at(0) === USER_ROLES.USER ? <LoanNewItem /> : <UserLogin />} />
         <Route path={APP_PATHS.USER.LIST_ITEMS_PURCHASED} element={globalUser.roles?.at(0) === USER_ROLES.USER ? <ListItemsPurchasedUser /> : <UserLogin/> } />
 
         <Route path={APP_PATHS.ADMIN.LOGIN} element={<AdminLogin />} />

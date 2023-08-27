@@ -32,9 +32,7 @@ export function ManageItemsAdmin() : React.JSX.Element {
   const [Items, setItems] = React.useState<Item[]>([])
   React.useEffect(() => {
       getAllItems().then(res=>setItems(res));
-    },
-  //  [props.createdNewEmployee]
-  );
+    },[]);
 
   return (
     <Box
