@@ -2,7 +2,7 @@ import { Button, useTheme } from "@mui/material";
 import { Box, Card, Typography } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { APP_PATHS } from "../const";
+import { APP_PATHS, USER_ROLES } from "../const";
 import { userDetailsContext } from "../contexts/UserDetailsProvider";
 import { parseUserCookie } from "../services/common.services";
 import { ISignInRes } from "../types/siginInRes";
@@ -18,6 +18,10 @@ export function Home() : React.JSX.Element {
     const user = parseUserCookie();
     setGlobalUser(user)
     console.log(user);
+    if(user.roles?.at(0) === USER_ROLES.ADMIN)
+      navigate(APP_PATHS.ADMIN.DASHBOARD)
+    else if(user.roles?.at(0) === USER_ROLES.USER)
+      navigate(APP_PATHS.USER.DASHBOARD)
   },[])
   return (
     <>

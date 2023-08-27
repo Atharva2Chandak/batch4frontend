@@ -1,10 +1,22 @@
 import { Card, Divider, Typography, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AVATAR_BASE_URL } from "../const";
+import { userDetailsContext } from "../contexts/UserDetailsProvider";
+import { getEmployeeById } from "../services/http.services";
+import { IEmployee } from "../types/employee";
+import { ISignInRes } from "../types/siginInRes";
 
 export function EmployeeDetailsCard() : React.JSX.Element {
-  const [username, setUsername] = useState<string>('John Doe')
+  const [employee, setEmployee] = useState<IEmployee>()
+  const [globalUser] = useContext(userDetailsContext) as [ISignInRes, React.Dispatch<React.SetStateAction<ISignInRes>>];
+
+  useEffect(()=>{
+    getEmployeeById(globalUser.username).then((res) => {
+      setEmployee(res);
+    })
+  }, [])
+
   const theme = useTheme();
   return (
     <Card
@@ -23,7 +35,7 @@ export function EmployeeDetailsCard() : React.JSX.Element {
         }}
       >
         <img 
-          src={AVATAR_BASE_URL + username} alt='avatar' 
+          src={AVATAR_BASE_URL + employee?.name} alt='avatar' 
           style={{
             height: '13em',
             borderRadius: '50%'
@@ -43,27 +55,27 @@ export function EmployeeDetailsCard() : React.JSX.Element {
           sx={{m: 1}}
         >
           <Typography color='gray' fontWeight={300}>Employee Name </Typography>
-          <Typography color={theme.palette.primary.main} fontWeight={500}>John Doe</Typography>
+          <Typography color={theme.palette.primary.main} fontWeight={500}>{employee?.name}</Typography>
         </Box>
         
         <Box
           sx={{m: 1}}
         >
           <Typography color='gray' fontWeight={300}>Employee ID </Typography>
-          <Typography color={theme.palette.primary.main} fontWeight={500}>1234567</Typography>
+          <Typography color={theme.palette.primary.main} fontWeight={500}>{employee?.id}</Typography>
         </Box>
 
         <Box
           sx={{m: 1}}
         >
           <Typography color='gray' fontWeight={300}>Designation</Typography>
-          <Typography color={theme.palette.primary.main} fontWeight={500}>Program Associate</Typography>
+          <Typography color={theme.palette.primary.main} fontWeight={500}>{employee?.designation}</Typography>
         </Box>
         <Box
           sx={{m: 1}}
         >
           <Typography color='gray' fontWeight={300}>Department</Typography>
-          <Typography color={theme.palette.primary.main} fontWeight={500}>Technology</Typography>
+          <Typography color={theme.palette.primary.main} fontWeight={500}>{employee?.department}</Typography>
         </Box>
       </Box>
     </Card>

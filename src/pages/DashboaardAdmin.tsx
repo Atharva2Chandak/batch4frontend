@@ -1,17 +1,25 @@
 import { Card, Typography, useTheme, Button } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { APP_PATHS } from "../const";
+import { userDetailsContext } from "../contexts/UserDetailsProvider";
+import { getEmployeeById } from "../services/http.services";
+import { ISignInRes } from "../types/siginInRes";
 
 export function DashboardAdmin(): React.JSX.Element {
   const theme = useTheme();
   const navigate = useNavigate();
-
+  const [globalUser] = useContext(userDetailsContext) as [ISignInRes];
+  const [adminName, setAdminName] = useState<string>('');
   const handleClickListCustomers = () =>
     navigate(APP_PATHS.ADMIN.LIST_CUSTOMERS);
   const handleClickListLoans = () => navigate(APP_PATHS.ADMIN.LIST_LOANS);
   const handleClickListItemsMaster = () => navigate(APP_PATHS.ADMIN.LIST_ITEMS);
+
+  useEffect(()=>{
+    getEmployeeById(globalUser.username).then((res)=>setAdminName(res?.name))
+  })
 
   return (
     <>
@@ -36,7 +44,7 @@ export function DashboardAdmin(): React.JSX.Element {
             fontWeight={200}
             sx={{ m: 4 }}
           >
-            Welcome Name. What would you like to do today?
+            Welcome {adminName}. What would you like to do today?
           </Typography>
         </Box>
         <Box

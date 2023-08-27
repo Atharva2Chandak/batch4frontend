@@ -20,7 +20,7 @@ export default function ItemCard(props:any) : React.JSX.Element {
     <Card variant="elevation" sx={{boxShadow:5,p:2}}>
       <CardContent>
         <Typography sx={{ fontSize: 14,mb:0 }} color="text.secondary" gutterBottom>
-          Item #{props.itemId}
+          Item # {props.itemId}
         </Typography>
         <Typography variant="h5" component="div">
           {props.itemValue}

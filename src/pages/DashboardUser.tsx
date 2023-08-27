@@ -1,15 +1,24 @@
 import { Card, Typography, useTheme, Button } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { APP_PATHS } from "../const";
+import { userDetailsContext } from "../contexts/UserDetailsProvider";
+import { getEmployeeById } from "../services/http.services";
+import { ISignInRes } from "../types/siginInRes";
 
 export function DashboardUser(): React.JSX.Element {
   const theme = useTheme();
   const navigate = useNavigate();
+  const [globalUser] = useContext(userDetailsContext) as [ISignInRes];
+  const [userName, setUserName] = useState<string>('');
   const handleClickListLoans = () => navigate(APP_PATHS.USER.LIST_LOANS);
   const handleClickListItemsPurchased = () =>
     navigate(APP_PATHS.USER.LIST_ITEMS_PURCHASED);
+
+  useEffect(()=>{
+    getEmployeeById(globalUser.username).then(res=>setUserName(res?.name))
+  }, [])
   return (
     <>
       {/* <Toolbar /> */}
@@ -33,7 +42,7 @@ export function DashboardUser(): React.JSX.Element {
             fontWeight={200}
             sx={{ m: 4 }}
           >
-            Welcome Name. What would you like to do today?
+            Welcome {userName}. What would you like to do today?
           </Typography>
         </Box>
         <Box
@@ -70,7 +79,7 @@ export function DashboardUser(): React.JSX.Element {
               variant='contained'
               onClick={handleClickListItemsPurchased}
             >
-              View items purchased
+              View Purchased Items
             </Button>
           </Card>
         </Box>

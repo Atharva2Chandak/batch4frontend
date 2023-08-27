@@ -1,18 +1,19 @@
 import { Button, Divider, Toolbar, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useContext } from "react";
 import { EmployeeDetailsCard } from "../components/EmployeeDetailsCard";
 import ListItemsPurchasedTableUser from "../components/ListItemsPurchasedTableUser";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
 import { APP_PATHS } from "../const";
+import { userDetailsContext } from "../contexts/UserDetailsProvider";
+import { ISignInRes } from "../types/siginInRes";
 
 
 export function ListItemsPurchasedUser() : React.JSX.Element {
-
   const navigate = useNavigate();
   const handleClickBackToDashBoard = () => navigate(APP_PATHS.USER.DASHBOARD)
-
+  
   return(
     <Box
       id='list-loans-page-user-master-container'

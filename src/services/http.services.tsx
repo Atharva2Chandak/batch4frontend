@@ -2,6 +2,7 @@
 import Cookies from "js-cookie";
 import { API_PATHS, HTTP_METHODS } from "../const";
 import { IEmployee } from "../types/employee";
+import { ILoanedItems } from "../types/IloanedItems";
 import { ILoan } from "../types/loan";
 import { ISignInRes } from "../types/siginInRes.d";
 
@@ -89,6 +90,20 @@ export async function getEmployeeById(empId: string) : Promise<IEmployee> {
   }).catch(e=>console.log(e));
   const employee = await response?.json();
   return employee as IEmployee;
+}
+
+export async function getLoanedItemsByEmployee() : Promise<ILoanedItems[]> {
+  const headers = new Headers();
+  const token = Cookies.get('bearer-token') || '';
+  headers.append("Authorization", `Bearer ${token}`);
+  const response = await fetch(API_PATHS.GET_LOANED_ITEMS, {
+    method: HTTP_METHODS.GET,
+    headers: headers
+  });
+
+  const loanedItems = await response?.json();
+  return loanedItems as ILoanedItems[];
+
 }
 
 ///######################## loans #########################

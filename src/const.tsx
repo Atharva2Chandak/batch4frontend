@@ -55,6 +55,7 @@ export const API_PATHS = {
   EDIT_EMPLOYEE: `${API_BASE_URL}/employee/update/`,
   DELETE_EMPLOYEE: `${API_BASE_URL}/employee/delete/`,
   GET_EMPLOYEE_BY_ID: `${API_BASE_URL}/employee/`,
+  GET_LOANED_ITEMS: `${API_BASE_URL}/employee/loanedItems`,
 
   GET_ALL_LOANS: `${API_BASE_URL}/loan/all/`,
   CREATE_LOAN: `${API_BASE_URL}/loan/create/`,
