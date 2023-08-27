@@ -1,11 +1,29 @@
 import { Button, Card, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import LoginIcon from '@mui/icons-material/Login';
+import { signIn } from "../services/http.services";
+import { storeUserCookie } from "../services/common.services";
+import { userDetailsContext } from "../contexts/UserDetailsProvider";
+import { ISignInRes } from "../types/siginInRes";
+import { useNavigate } from "react-router-dom";
+import { APP_PATHS, USER_ROLES } from "../const";
 
 export function LoginForm() : React.JSX.Element {
   const [username, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
+  const [globalUser , setGlobalUser] = useContext(userDetailsContext) as [ISignInRes, React.Dispatch<React.SetStateAction<ISignInRes>>]
+  
+  const signInHandle = ()=>{
+    signIn(username, password).then(res=>{
+      storeUserCookie(res);
+      setGlobalUser(res);
+      navigate(res.roles[0] === USER_ROLES.ADMIN ? APP_PATHS.ADMIN.DASHBOARD : APP_PATHS.USER.DASHBOARD)
+    });
+  }
+
+
   return (
     <Card
       sx={{
@@ -43,7 +61,7 @@ export function LoginForm() : React.JSX.Element {
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
-        <Button sx={{m: 2}} startIcon={<LoginIcon/>}>
+        <Button sx={{m: 2}} startIcon={<LoginIcon/>} onClick={signInHandle} >
           Submit
         </Button>
       </Box>

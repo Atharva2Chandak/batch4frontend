@@ -61,6 +61,8 @@ export const API_PATHS = {
   EDIT_LOAN:  `${API_BASE_URL}/loan/update/`,
   DELETE_LOAN:  `${API_BASE_URL}/loan/delete/`,
   GET_LOAN_BY_ID:  `${API_BASE_URL}/loan/`,
+
+  SIGN_IN: `${API_BASE_URL}/auth/signin/`,
 }
 
 export const GENDER_DROPDOWN = [
@@ -83,3 +85,7 @@ export const DESIGNATION = [
   'Manager',
 ]
 
+export const USER_ROLES = {
+  ADMIN: 'ROLE_ADMIN',
+  USER: 'ROLE_USER',
+}
