@@ -72,7 +72,7 @@ export function DashboardUser(): React.JSX.Element {
               variant='contained'
               onClick={handleClickListLoans}
             >
-              Manage your Loans
+              View Item Catalogue
             </Button>
             <Button
               sx={{ m: 3, mt: 0, borderRadius: 0 }}
