@@ -9,14 +9,17 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import { getAllItems } from '../services/http.itemservices';
 import { Item } from "../types/item";
 import PurchaseItemCard from "../components/PurchaseItemCard";
+import { errorDetailsContext } from '../contexts/ErrorDetailsProvider';
+import { IError } from '../types/IError';
 
 export function LoanNewItem(): React.JSX.Element {
   const navigate = useNavigate();
   const handleClickBackToDashBoard = ()=>navigate(APP_PATHS.USER.DASHBOARD)
+  const [,setGlobalError] = React.useContext(errorDetailsContext) as [IError, React.Dispatch<React.SetStateAction<IError>>];
 
   const [Items, setItems] = React.useState<Item[]>([])
   React.useEffect(() => {
-      getAllItems().then(res=>setItems(res));
+      getAllItems().then(res=>setItems(res)).catch(err=>setGlobalError({message: err, SnackBarOpen: true}));;
     },[]);
 
   return (

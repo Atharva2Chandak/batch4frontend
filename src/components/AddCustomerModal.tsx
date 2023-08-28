@@ -8,6 +8,8 @@ import { IEmployee } from "../types/employee";
 import dayjs from "dayjs";
 import { DEPARTMENTS, DESIGNATION, GENDER_DROPDOWN as GENDER } from "../const";
 import { createEmployee } from "../services/http.services";
+import { errorDetailsContext } from "../contexts/ErrorDetailsProvider";
+import { IError } from "../types/IError";
 
 export default function AddCustomerModal(props: {
   modalOpen: boolean;
@@ -39,6 +41,7 @@ export default function AddCustomerModal(props: {
   
   const [allgood, setAllgood] = React.useState<boolean>(false);
   const [confpass, setConfpass] = React.useState<string>("");
+  const [, setGlobalError] = React.useContext(errorDetailsContext) as [IError, React.Dispatch<React.SetStateAction<IError>>];
 
   React.useEffect(() => {
     if (
@@ -198,7 +201,7 @@ export default function AddCustomerModal(props: {
             sx={{ color: theme.palette.common.white, m: 2 }}
             disabled={!allgood}
             onClick={() => {              
-              createEmployee(customer);
+              createEmployee(customer).catch(err=>setGlobalError({message: err, SnackBarOpen: true}));
               setCustomer(initialCustomerState);
               setConfpass("");
               props.setModalOpen(false)

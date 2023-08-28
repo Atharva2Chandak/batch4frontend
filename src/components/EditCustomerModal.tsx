@@ -8,6 +8,8 @@ import { IEmployee } from "../types/employee";
 import dayjs from "dayjs";
 import { DEPARTMENTS, DESIGNATION, GENDER_DROPDOWN as GENDER } from "../const";
 import { editEmployee, getEmployeeById } from "../services/http.services";
+import { errorDetailsContext } from "../contexts/ErrorDetailsProvider";
+import { IError } from "../types/IError";
 
 export default function EditCustomerModal(props: {
   modalOpen: boolean;
@@ -17,6 +19,7 @@ export default function EditCustomerModal(props: {
   customerId: string;
 }): React.JSX.Element {
   const theme = useTheme();
+  const [,setGlobalError] = React.useContext(errorDetailsContext) as [IError, React.Dispatch<React.SetStateAction<IError>>];
 
   const initialCustomerState = {
     name: "",
@@ -29,8 +32,10 @@ export default function EditCustomerModal(props: {
   };
 
   React.useEffect(() => {
-    getEmployeeById(props.customerId).then(employee => setCustomer(employee))
-  }, [props.customerId])
+    getEmployeeById(props.customerId)
+      .then((employee) => setCustomer(employee))
+      .catch((err) => setGlobalError({ message: err, SnackBarOpen: true }));
+  }, [props.customerId]);
   
 
   const [customer, setCustomer] = React.useState<
@@ -186,7 +191,7 @@ export default function EditCustomerModal(props: {
             sx={{ color: theme.palette.common.white, m: 2 }}
             disabled={!allgood}
             onClick={() => {
-              editEmployee(customer, props.customerId)
+              editEmployee(customer, props.customerId).catch(err=>setGlobalError({message: err, SnackBarOpen: true}));
               handleClose()
               props.setCreatedNewEmployee(props.createdNewEmployee + 1);
             }}

@@ -4,6 +4,8 @@ import Modal from "@mui/material/Modal";
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField, useTheme } from "@mui/material";
 
 import { createItem, editItem } from '../services/http.itemservices';
+import { errorDetailsContext } from "../contexts/ErrorDetailsProvider";
+import { IError } from "../types/IError";
 
 
 export default function ManageItemModal(props: any): React.JSX.Element {
@@ -14,10 +16,11 @@ export default function ManageItemModal(props: any): React.JSX.Element {
   const [itemCategory, setItemCategory] = React.useState(props.itemCategory||'');
   const [itemMake, setItemMake] = React.useState(props.itemMake||'');
   const [issueStatus, setissueStatus] = React.useState(props.issueStatus=='1'||props.issueStatus=='Yes'?'Yes':'No');
-  
+  const [, setGlobalError] = React.useContext(errorDetailsContext) as [IError, React.Dispatch<React.SetStateAction<IError>>];
+
   const handleAddItem = () =>{
     if ( itemValuation && itemCategory && itemMake && issueStatus && itemDescription ){
-      const employee = createItem({itemValuation,itemCategory,itemMake,issueStatus,itemDescription});
+      createItem({itemValuation,itemCategory,itemMake,issueStatus,itemDescription}).catch(err=>setGlobalError({message: err, SnackBarOpen: true}));
       props.setModalOpen(false);
       window.location.reload();
     }
@@ -28,7 +31,10 @@ export default function ManageItemModal(props: any): React.JSX.Element {
   
   const handleEditItem = () =>{
     if ( itemValuation && itemCategory && itemMake && issueStatus && itemDescription ){
-      const employee = editItem({itemValuation,itemCategory,itemMake,issueStatus,itemDescription},props.id);
+      editItem(
+        { itemValuation, itemCategory, itemMake, issueStatus, itemDescription },
+        props.id
+      ).catch((err) => setGlobalError({ message: err, SnackBarOpen: true }));
       props.setModalOpen(false);
       window.location.reload();
     }

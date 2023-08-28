@@ -10,6 +10,8 @@ import Paper from '@mui/material/Paper';
 import { getLoanedItemsByEmployee } from '../services/http.services';
 import { ILoanedItems } from '../types/IloanedItems';
 import { Tooltip, Typography } from '@mui/material';
+import { errorDetailsContext } from '../contexts/ErrorDetailsProvider';
+import { IError } from '../types/IError';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -33,9 +35,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function ListItemsPurchasedTableUser() : React.JSX.Element {
   const [loanedItems, setLoanedItems] = React.useState<ILoanedItems[]>();
-  React.useEffect(()=>{
-    getLoanedItemsByEmployee().then(res=>setLoanedItems(res));
-  }, [])  
+  const [globalError, setGlobalError] = React.useContext(
+    errorDetailsContext
+  ) as [IError, React.Dispatch<React.SetStateAction<IError>>];
+
+  React.useEffect(() => {
+    getLoanedItemsByEmployee()
+      .then((res) => setLoanedItems(res))
+      .catch((err) => setGlobalError({ message: err, SnackBarOpen: true }));
+  }, []);  
+
+  
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">

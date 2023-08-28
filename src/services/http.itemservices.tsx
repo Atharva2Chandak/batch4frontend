@@ -10,9 +10,12 @@ export async function getItemById(itemId: string): Promise<Item> {
   const response = await fetch(API_PATHS.GET_ITEM_BY_ID + itemId, {
     method: HTTP_METHODS.GET,
     headers: headers,
-  }).catch((e) => console.log(e));
+  });
   const item = await response?.json();
-  return item as Item;
+  if(response.ok)
+    return item as Item;
+  else throw new Error(`${item.message} [${response.status}]`);
+  
 }
 
 export async function getAllItems(): Promise<Item[]> {
@@ -21,9 +24,12 @@ export async function getAllItems(): Promise<Item[]> {
   headers.append("Authorization", `Bearer ${token}`);
   const response = await fetch(API_PATHS.GET_ALL_ITEMS, {
     method: HTTP_METHODS.GET,
-  }).catch((e) => console.log(e));
+  })
+
   const employees = await response?.json();
-  return employees as Item[];
+  if(response.ok)
+    return employees as Item[];
+  else throw new Error(`${employees.message} [${response.status}]`)
 }
 
 export async function createItem(item: Item): Promise<Item> {
@@ -46,7 +52,9 @@ export async function createItem(item: Item): Promise<Item> {
     redirect: "follow",
   });
   const employee = await response.json();
-  return employee as Item;
+  if(response.ok)
+    return employee as Item;
+  else throw new Error(`${employee.message} [${response.status}]`)
 }
 
 export async function deleteItem(itemId: string): Promise<string> {
@@ -59,8 +67,14 @@ export async function deleteItem(itemId: string): Promise<string> {
     redirect: "follow",
   });
 
-  const status = await response.text();
-  return status as string;
+  if(response.ok) {
+    const status = await response.text();
+    return status as string;
+  }
+  else {
+    const status = await response.json();
+    throw new Error(`${status.message} ${response.status}`)
+  }
 }
 
 export async function editItem(item: Item, itemId: string): Promise<Item> {
@@ -85,5 +99,7 @@ export async function editItem(item: Item, itemId: string): Promise<Item> {
     redirect: "follow",
   });
   const employee = await response.json();
-  return employee as Item;
+  if(response.ok)
+    return employee as Item;
+  else throw new Error(`${employee.message} [${response.status}]`)
 }

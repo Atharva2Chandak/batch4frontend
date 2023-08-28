@@ -14,9 +14,11 @@ export async function getAllEmployees() : Promise<IEmployee[]> {
   const response = await fetch(API_PATHS.GET_ALL_EMPLOYEES, {
     method: HTTP_METHODS.GET,
     headers: myHeaders
-  }).catch(e=>console.log(e));
+  })
   const employees = await response?.json();
-  return employees as IEmployee[];
+  if(response.ok)
+    return employees as IEmployee[];
+  else throw new Error(`${employees.message} [${response.status}]`);
 }
 
 export async function createEmployee(customer: IEmployee & {password: string}) : Promise<IEmployee> {
@@ -40,7 +42,9 @@ export async function createEmployee(customer: IEmployee & {password: string}) :
     redirect: 'follow'
   }) 
   const employee = await response.json();
-  return employee as IEmployee;
+  if(response.ok)
+    return employee as IEmployee;
+  else throw new Error(`${employee.message} [${response.status}]`);
 }
 
 export async function deleteEmployee(empId: string): Promise<string> {
@@ -53,8 +57,14 @@ export async function deleteEmployee(empId: string): Promise<string> {
     redirect: 'follow'
   })
 
-  const status = await response.text();
-  return status as string;
+  if(response.ok) {
+    const status = await response.text();
+    return status as string;
+  }
+  else {
+    const status = await response.json();
+    throw new Error(`${status.message} [${response.status}]`);
+  }
 }
 
 export async function editEmployee(customer: IEmployee, empId: string) : Promise<IEmployee> {
@@ -77,7 +87,9 @@ export async function editEmployee(customer: IEmployee, empId: string) : Promise
     redirect: 'follow'
   }) 
   const employee = await response.json();
-  return employee as IEmployee;
+  if(response.ok)
+    return employee as IEmployee;
+  else throw new Error(`${employee.message} [${response.status}]`)
 }
 
 export async function getEmployeeById(empId: string) : Promise<IEmployee> {
@@ -87,9 +99,12 @@ export async function getEmployeeById(empId: string) : Promise<IEmployee> {
   const response = await fetch(API_PATHS.GET_EMPLOYEE_BY_ID + empId, {
     method: HTTP_METHODS.GET,
     headers: myHeaders
-  }).catch(e=>console.log(e));
+  })
   const employee = await response?.json();
-  return employee as IEmployee;
+  
+  if(response.ok)
+    return employee as IEmployee;
+  else throw new Error(`${employee.message} [${response.status}]`);
 }
 
 export async function getLoanedItemsByEmployee() : Promise<ILoanedItems[]> {
@@ -102,7 +117,9 @@ export async function getLoanedItemsByEmployee() : Promise<ILoanedItems[]> {
   });
 
   const loanedItems = await response?.json();
-  return loanedItems as ILoanedItems[];
+  if(response.ok)
+    return loanedItems as ILoanedItems[];
+  else throw new Error(`${loanedItems.message} [${response.status}]`);
 
 }
 
@@ -120,7 +137,9 @@ export async function PurchaseNewItem(itemId: string) : Promise<{issueId: string
     body: raw
   })
   const issueId = await response?.json();
-  return issueId as {issueId: string};
+  if(response.ok)
+    return issueId as {issueId: string};
+  else throw new Error(`${issueId.message} [${response.status}]`);
 }
 
 
@@ -132,9 +151,11 @@ export async function getAllLoans() : Promise<ILoan[]> {
   const response = await fetch(API_PATHS.GET_ALL_LOANS, {
     method: HTTP_METHODS.GET,
     headers: myHeaders,
-  }).catch(e=>console.log(e));
+  })
   const loans = await response?.json();
-  return loans as ILoan[];
+  if(response.ok)
+    return loans as ILoan[];
+  else throw new Error(`${loans.message} [${response.status}]`);
 }
 
 export async function createLoan(card: ILoan) : Promise<ILoan> {
@@ -153,7 +174,9 @@ export async function createLoan(card: ILoan) : Promise<ILoan> {
     redirect: 'follow'
   }) 
   const loan = await response.json();
-  return loan as ILoan;
+  if(response.ok)
+    return loan as ILoan;
+  else throw new Error(`${loan.message} [${response.status}]`)
 }
 
 export async function deleteLoan(loanID: string): Promise<string> {
@@ -165,9 +188,14 @@ export async function deleteLoan(loanID: string): Promise<string> {
     headers: headers,
     redirect: 'follow'
   })
-
-  const status = await response.text();
-  return status as string;
+  if(response.ok){
+    const status = await response.text();
+    return status as string;
+  }
+  else{
+    const status = await response.json();
+    throw new Error(status.message + ` [${response.status}]`)
+  }
 }
 
 export async function editLoan(card: ILoan, loanID: string) : Promise<ILoan> {
@@ -186,7 +214,10 @@ export async function editLoan(card: ILoan, loanID: string) : Promise<ILoan> {
     redirect: 'follow'
   }) 
   const loan = await response.json();
-  return loan as ILoan;
+  if(response.ok){
+    return loan as ILoan;
+  }
+  else throw new Error(loan.message + `[${response.status}]`)
 }
 
 export async function getLoanById(loanID: string) : Promise<ILoan> {
@@ -196,9 +227,12 @@ export async function getLoanById(loanID: string) : Promise<ILoan> {
   const response = await fetch(API_PATHS.GET_LOAN_BY_ID + loanID, {
     method: HTTP_METHODS.GET,
     headers: myHeaders
-  }).catch(e=>console.log(e));
+  });
   const loan = await response?.json();
-  return loan as ILoan;
+  if(response.ok) {
+    return loan as ILoan;
+  }
+  else throw new Error(loan.message + `[${response.status}]`)
 }
 
 // ##################### AUTH #################
@@ -220,7 +254,9 @@ export async function signIn(username: string, password: string) : Promise<ISign
     redirect: 'follow'
   })
   const signInRes = await res.json();
-  return signInRes as ISignInRes;
-
+  if(res.ok){
+    return signInRes as ISignInRes;
+  }
+  else throw new Error(signInRes.message + ` [${res.status}]`)
 }
 

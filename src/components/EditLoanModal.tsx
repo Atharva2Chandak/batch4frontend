@@ -4,6 +4,8 @@ import Modal from "@mui/material/Modal";
 import { Autocomplete, Button, TextField, useTheme } from "@mui/material";
 import { ILoan } from "../types/loan";
 import { editLoan, getLoanById } from "../services/http.services";
+import { errorDetailsContext } from "../contexts/ErrorDetailsProvider";
+import { IError } from "../types/IError";
 
 export default function EditLoanModal(props: {
   modalOpen: boolean;
@@ -13,7 +15,7 @@ export default function EditLoanModal(props: {
   loanId: string;
 }): React.JSX.Element {
   const theme = useTheme();
-
+  const [globalError, setGlobalError] = React.useContext(errorDetailsContext) as [IError, React.Dispatch<React.SetStateAction<IError>>]
   const initialLoanState = {
     durationInYears: 0,
     loanType: "",
@@ -21,6 +23,7 @@ export default function EditLoanModal(props: {
 
   React.useEffect(() => {
     getLoanById(props.loanId).then(loan => setLoan(loan))
+    .catch(response => setGlobalError({message: response, SnackBarOpen: true}));
   }, [props.loanId])
   
 
@@ -104,7 +107,7 @@ export default function EditLoanModal(props: {
             color='secondary'
             sx={{ color: theme.palette.common.white, m: 2 }}
             onClick={() => {
-              editLoan(loan, props.loanId)
+              editLoan(loan, props.loanId).catch(res=>setGlobalError({message: res, SnackBarOpen: true}))
               handleClose()
               props.setCreatedNewLoan(props.createdNewLoan + 1);
             }}

@@ -3,8 +3,10 @@ import { Box } from "@mui/system";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { APP_PATHS } from "../const";
+import { errorDetailsContext } from "../contexts/ErrorDetailsProvider";
 import { userDetailsContext } from "../contexts/UserDetailsProvider";
 import { getEmployeeById } from "../services/http.services";
+import { IError } from "../types/IError";
 import { ISignInRes } from "../types/siginInRes";
 
 export function DashboardUser(): React.JSX.Element {
@@ -12,13 +14,17 @@ export function DashboardUser(): React.JSX.Element {
   const navigate = useNavigate();
   const [globalUser] = useContext(userDetailsContext) as [ISignInRes];
   const [userName, setUserName] = useState<string>('');
+  const [globalError, setGlobalError] = useContext(errorDetailsContext) as [IError, React.Dispatch<React.SetStateAction<IError>>];
+  
   const handleClickListLoans = () => navigate(APP_PATHS.USER.LIST_LOANS);
   const handleClickListItemsPurchased = () =>
     navigate(APP_PATHS.USER.LIST_ITEMS_PURCHASED);
 
-  useEffect(()=>{
-    getEmployeeById(globalUser.username).then(res=>setUserName(res?.name))
-  }, [])
+  useEffect(() => {
+    getEmployeeById(globalUser.username)
+      .then((res) => setUserName(res?.name))
+      .catch((err) => setGlobalError({ message: err, SnackBarOpen: true }));
+  }, []);
   return (
     <>
       {/* <Toolbar /> */}

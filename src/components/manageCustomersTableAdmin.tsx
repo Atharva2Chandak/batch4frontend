@@ -13,6 +13,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteEmployee, getAllEmployees } from '../services/http.services';
 import { IEmployee } from '../types/employee';
 import EditCustomerModal from './EditCustomerModal';
+import { errorDetailsContext } from '../contexts/ErrorDetailsProvider';
+import { IError } from '../types/IError';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -40,11 +42,12 @@ export default function ManageCustomersTableAdmin(props: {createdNewEmployee: nu
   const [snackOpen, setSnackOpen] = React.useState<boolean>(false);
   const [editModalOpen, setEditModalOpen] = React.useState<boolean>(false);
   const [editCustomerId, setEditCustomerId] = React.useState<string>('');
+  const [, setGlobalError] = React.useContext(errorDetailsContext) as [IError, React.Dispatch<React.SetStateAction<IError>>]
 
   const handleSnackClose = ()=>setSnackOpen(false);
 
   React.useEffect(() => {
-    getAllEmployees().then(res=>setEmployees(res));
+    getAllEmployees().then(res=>setEmployees(res)).catch(err=>setGlobalError({message: err, SnackBarOpen: true}));
   }, [props.createdNewEmployee]);
 
 
@@ -93,7 +96,7 @@ export default function ManageCustomersTableAdmin(props: {createdNewEmployee: nu
                 color='error' 
                 startIcon={<DeleteIcon/>} 
                 onClick={()=>{
-                  deleteEmployee(row.id || '')
+                  deleteEmployee(row.id || '').catch(err=>setGlobalError({message: err, SnackBarOpen: true}));
                   props.setCreatedNewEmployee(props.createdNewEmployee + 1)
                   setSnackOpen(true);
                 }}
