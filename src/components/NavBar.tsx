@@ -54,7 +54,6 @@ export function NavBar(): React.JSX.Element {
         {globalUser.username ? <Button onClick={handleLogoutClick} startIcon={<LogoutIcon/>} sx={{ color: theme.palette.primary.main }}>
           Logout
         </Button> : <></>}
-        
       </Toolbar>
     </AppBar>
   );

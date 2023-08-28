@@ -1,20 +1,23 @@
 import { Card, Divider, Typography, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useContext, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { AVATAR_BASE_URL } from "../const";
+import { errorDetailsContext } from "../contexts/ErrorDetailsProvider";
 import { userDetailsContext } from "../contexts/UserDetailsProvider";
 import { getEmployeeById } from "../services/http.services";
 import { IEmployee } from "../types/employee";
+import { IError } from "../types/IError";
 import { ISignInRes } from "../types/siginInRes";
 
 export function EmployeeDetailsCard() : React.JSX.Element {
   const [employee, setEmployee] = useState<IEmployee>()
   const [globalUser] = useContext(userDetailsContext) as [ISignInRes, React.Dispatch<React.SetStateAction<ISignInRes>>];
+  const [,setGlobalError] = useContext(errorDetailsContext) as [IError, Dispatch<SetStateAction<IError>>]
 
   useEffect(()=>{
     getEmployeeById(globalUser.username).then((res) => {
       setEmployee(res);
-    })
+    }).catch(err=>setGlobalError({message: err, SnackBarOpen: true}));
   }, [])
 
   const theme = useTheme();

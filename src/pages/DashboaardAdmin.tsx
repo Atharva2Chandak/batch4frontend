@@ -1,10 +1,12 @@
 import { Card, Typography, useTheme, Button } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useContext, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { APP_PATHS } from "../const";
+import { errorDetailsContext } from "../contexts/ErrorDetailsProvider";
 import { userDetailsContext } from "../contexts/UserDetailsProvider";
 import { getEmployeeById } from "../services/http.services";
+import { IError } from "../types/IError";
 import { ISignInRes } from "../types/siginInRes";
 
 export function DashboardAdmin(): React.JSX.Element {
@@ -12,14 +14,18 @@ export function DashboardAdmin(): React.JSX.Element {
   const navigate = useNavigate();
   const [globalUser] = useContext(userDetailsContext) as [ISignInRes];
   const [adminName, setAdminName] = useState<string>('');
+  const [globalError, setGlobalError] = useContext(errorDetailsContext) as [IError, Dispatch<SetStateAction<IError>>];
+  
   const handleClickListCustomers = () =>
     navigate(APP_PATHS.ADMIN.LIST_CUSTOMERS);
   const handleClickListLoans = () => navigate(APP_PATHS.ADMIN.LIST_LOANS);
   const handleClickListItemsMaster = () => navigate(APP_PATHS.ADMIN.LIST_ITEMS);
 
-  useEffect(()=>{
-    getEmployeeById(globalUser.username).then((res)=>setAdminName(res?.name))
-  })
+  useEffect(() => {
+    getEmployeeById(globalUser.username)
+      .then((res) => setAdminName(res?.name))
+      .catch((err) => setGlobalError({ message: err, SnackBarOpen: true }));
+  }, []);
 
   return (
     <>

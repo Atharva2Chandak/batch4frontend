@@ -1,12 +1,11 @@
 import { Button, Toolbar, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
 import { APP_PATHS } from "../const";
 import ManageLoansTableAdmin from "../components/manageLoansTableAdmin";
 import ManageLoansModal from "../components/ManageLoanModal";
-import { getAllLoans } from "../services/http.services";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 

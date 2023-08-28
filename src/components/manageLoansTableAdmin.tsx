@@ -13,6 +13,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteLoan, getAllLoans } from '../services/http.services';
 import { ILoan } from '../types/loan';
 import EditLoanModal from './EditLoanModal';
+import { errorDetailsContext } from '../contexts/ErrorDetailsProvider';
+import { IError } from '../types/IError';
 //???????? make service?
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -48,11 +50,11 @@ export default function ManageLoansTableAdmin(props: {createdNewLoan: number, se
   const [snackOpen, setSnackOpen] = React.useState<boolean>(false);
   const [editModalOpen, setEditModalOpen] = React.useState<boolean>(false);
   const [editLoanId, setEditLoanId] = React.useState<string>('');
-
+  const [globalError, setGlobalError] = React.useContext(errorDetailsContext) as [IError, React.Dispatch<React.SetStateAction<IError>>]
   const handleSnackClose = ()=>setSnackOpen(false);
 
   React.useEffect(() => {
-    getAllLoans().then(res=>setLoan(res));
+    getAllLoans().then(res=>setLoan(res)).catch(res=>setGlobalError({message: res, SnackBarOpen: true}));
   }, [props.createdNewLoan]);
 
   return (
@@ -88,7 +90,7 @@ export default function ManageLoansTableAdmin(props: {createdNewLoan: number, se
                 color='error' 
                 startIcon={<DeleteIcon/>} 
                 onClick={()=>{
-                  deleteLoan(row.id || '')
+                  deleteLoan(row.id || '').catch(res=>setGlobalError({message: res, SnackBarOpen: true}))
                   props.setCreatedNewLoan(props.createdNewLoan + 1)
                   setSnackOpen(true);
                 }}

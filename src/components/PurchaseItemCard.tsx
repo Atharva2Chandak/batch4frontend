@@ -1,19 +1,22 @@
 
 import { Button, Snackbar, Typography, } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { PurchaseNewItem } from "../services/http.services";
+import { errorDetailsContext } from "../contexts/ErrorDetailsProvider";
+import { IError } from "../types/IError";
 
 export default function PurchaseItemCard(props:any) : React.JSX.Element {
   // const theme = useTheme();
   const [snackOpen, setSnackOpen] = useState(false);
   const [snackMessage, setSnackMessage] = useState('');
   const [issueStatus, setIssueStatus] = useState(props.issueStatus);
+  const [globalError, setGlobalError] = useContext(errorDetailsContext) as [IError, React.Dispatch<React.SetStateAction<IError>>];
   
   const handleSnackClose = ()=>setSnackOpen(false);
 
@@ -28,7 +31,7 @@ export default function PurchaseItemCard(props:any) : React.JSX.Element {
         setSnackMessage('Something went wrong. Try again!')
         setSnackOpen(true);
       }
-    })
+    }).catch(res=>setGlobalError({message: res, SnackBarOpen: true}));
   }
   return (
     <>

@@ -2,7 +2,7 @@ import { Button, Toolbar, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Grid from '@mui/material/Grid';
 
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
 import { APP_PATHS } from "../const";
@@ -10,8 +10,10 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import ItemCard from "../components/ItemCard";
 import ManageItemModal from "../components/ManageItemModal";
-import { deleteItem, getAllItems } from '../services/http.itemservices';
+import { getAllItems } from '../services/http.itemservices';
 import { Item } from "../types/item";
+import { errorDetailsContext } from "../contexts/ErrorDetailsProvider";
+import { IError } from "../types/IError";
 
 // const Items = [
 //   {itemId:3434,itemValuation:"Table", itemCategory:"Furniture", itemMake:"Wooden", itemStatus:"Yes", itemDesc:"This is an awesome product"},
@@ -26,12 +28,13 @@ import { Item } from "../types/item";
 export function ManageItemsAdmin() : React.JSX.Element {
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [, setGlobalError] = useContext(errorDetailsContext) as [IError, Dispatch<SetStateAction<IError>>];
   const navigate = useNavigate();
   const handleClickBackToDashBoard = ()=>navigate(APP_PATHS.ADMIN.DASHBOARD)
 
   const [Items, setItems] = React.useState<Item[]>([])
   React.useEffect(() => {
-      getAllItems().then(res=>setItems(res));
+      getAllItems().then(res=>setItems(res)).catch(err=>setGlobalError({message: err, SnackBarOpen: err}));
     },[]);
 
   return (

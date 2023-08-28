@@ -1,7 +1,7 @@
 
 import { Button, Typography, colors, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -11,10 +11,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import ManageItemModal from '../components/ManageItemModal'
 import { deleteItem } from "../services/http.itemservices";
+import { errorDetailsContext } from "../contexts/ErrorDetailsProvider";
+import { IError } from "../types/IError";
 
 export default function ItemCard(props:any) : React.JSX.Element {
   // const theme = useTheme();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [, setGlobalError] = useContext(errorDetailsContext) as [IError, Dispatch<SetStateAction<IError>>]
 
   return (
     <>
@@ -54,7 +57,7 @@ export default function ItemCard(props:any) : React.JSX.Element {
 
 
         <Typography  sx={{ fontSize: 14 }}  color="text.secondary">
-          Issue status: <span style={{color:props.issueStatus=='1'?'green':'red'}}>{props.issueStatus=='1'?"YES":"NO"}</span>
+          Issue status: <span style={{color:props.issueStatus==='1'?'green':'red'}}>{props.issueStatus==='1'?"YES":"NO"}</span>
         </Typography>
       </CardContent>
 
@@ -62,7 +65,7 @@ export default function ItemCard(props:any) : React.JSX.Element {
         <Button variant="outlined" startIcon={<EditIcon/>} onClick={() => setModalOpen(true)}>
           Edit
         </Button>
-        <Button variant="outlined" startIcon={<DeleteIcon/>}  onClick={() => deleteItem(props.id)}>
+        <Button variant="outlined" startIcon={<DeleteIcon/>}  onClick={() => deleteItem(props.id).catch(err=>setGlobalError({message: err, SnackBarOpen: true}))}>
           Delete
         </Button>
       </CardActions>

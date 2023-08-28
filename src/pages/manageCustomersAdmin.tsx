@@ -1,12 +1,11 @@
 import { Button, Toolbar, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
 import { APP_PATHS } from "../const";
 import ManageCustomersTableAdmin from "../components/manageCustomersTableAdmin";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { getAllEmployees } from "../services/http.services";
 import AddCustomerModal from "../components/AddCustomerModal";
 
 export function ManageCustomersAdmin(): React.JSX.Element {
